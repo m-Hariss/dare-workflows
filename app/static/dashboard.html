@@ -195,6 +195,65 @@
       color: var(--muted);
     }
 
+    /* ── Keys section ── */
+    .key-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .key-row:last-child { border-bottom: none; }
+    .key-provider {
+      width: 70px;
+      font-size: .82rem;
+      font-weight: 600;
+      text-transform: capitalize;
+    }
+    .key-status {
+      font-size: .75rem;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 4px;
+      width: 60px;
+      text-align: center;
+    }
+    .key-status.set   { background: #dcfce7; color: #15803d; }
+    .key-status.unset { background: #f4f4f5; color: var(--muted); }
+    .key-input {
+      flex: 1;
+      padding: 6px 10px;
+      font-size: .8rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-family: "SF Mono", ui-monospace, monospace;
+      outline: none;
+    }
+    .key-input:focus { border-color: var(--red); }
+    .btn-save {
+      padding: 6px 12px;
+      font-size: .78rem;
+      font-weight: 600;
+      background: var(--gradient);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn-remove {
+      padding: 6px 10px;
+      font-size: .78rem;
+      font-weight: 600;
+      background: transparent;
+      color: var(--red);
+      border: 1px solid #f9a8b4;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn-remove:hover { background: #fff0f2; }
+
     /* ── Node type badges ── */
     .badge {
       font-size: .65rem;
@@ -217,6 +276,16 @@
     <div>
       <div class="header-title">Dare Workflow Runner</div>
       <div class="header-subtitle">Upload and inspect your workflow</div>
+    </div>
+  </div>
+
+  <!-- Keys section -->
+  <div style="max-width:960px;margin:0 auto 0;padding:0 24px;">
+    <div class="card" style="margin-bottom:20px;">
+      <div class="card-header">API Keys</div>
+      <div class="card-body" id="keys-panel">
+        <!-- rendered by JS -->
+      </div>
     </div>
   </div>
 
@@ -374,8 +443,62 @@
       if (fileInput.files[0]) uploadFile(fileInput.files[0]);
     });
 
+    // ── Keys ──
+
+    const PROVIDERS = [
+      { id: 'openai',  label: 'OpenAI',  placeholder: 'sk-...' },
+      { id: 'claude',  label: 'Claude',  placeholder: 'sk-ant-...' },
+      { id: 'gemini',  label: 'Gemini',  placeholder: 'AI...' },
+      { id: 'ollama',  label: 'Ollama',  placeholder: 'http://localhost:11434' },
+    ];
+
+    async function loadKeys() {
+      const res = await fetch('/keys/status');
+      if (!res.ok) return;
+      const statuses = await res.json();
+      renderKeys(statuses);
+    }
+
+    function renderKeys(statuses) {
+      const keysPanel = document.getElementById('keys-panel');
+      keysPanel.innerHTML = PROVIDERS.map(p => `
+        <div class="key-row">
+          <span class="key-provider">${p.label}</span>
+          <span class="key-status ${statuses[p.id] ? 'set' : 'unset'}">
+            ${statuses[p.id] ? '✓ set' : 'not set'}
+          </span>
+          <input class="key-input" id="key-${p.id}" type="password" placeholder="${p.placeholder}" />
+          <button class="btn-save" onclick="saveKey('${p.id}')">Save</button>
+          ${statuses[p.id] ? `<button class="btn-remove" onclick="removeKey('${p.id}')">Remove</button>` : ''}
+        </div>
+      `).join('');
+    }
+
+    async function saveKey(provider) {
+      const input = document.getElementById(`key-${provider}`);
+      const value = input.value.trim();
+      if (!value) return;
+
+      const res = await fetch('/keys', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ provider, value }),
+      });
+
+      if (res.ok) {
+        input.value = '';
+        loadKeys();
+      }
+    }
+
+    async function removeKey(provider) {
+      await fetch(`/keys/${provider}`, { method: 'DELETE' });
+      loadKeys();
+    }
+
     // ── Init ──
     loadInfo();
+    loadKeys();
   </script>
 
 </body>
