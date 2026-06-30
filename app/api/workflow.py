@@ -48,3 +48,28 @@ def clear_workflow() -> dict:
     """Delete the stored workflow from disk."""
     workflow_store.clear()
     return {"message": "Workflow cleared"}
+
+
+@router.get("/slots")
+def get_slots() -> dict:
+    """Return the file slots required by the current workflow."""
+    data = workflow_store.load()
+    if data is None:
+        raise HTTPException(status_code=404, detail="No workflow uploaded yet")
+
+    workflow = load_workflow(data)
+    slots = []
+
+    for node in workflow.nodes:
+        if node.type == "step":
+            needs_content   = node.data.get("needsContentFiles", False)
+            needs_embedding = node.data.get("needsEmbeddingFiles", False)
+            if needs_content or needs_embedding:
+                slots.append({
+                    "slot_id": node.id,
+                    "label":   node.data.get("label", "Untitled Step"),
+                    "needs_content":   needs_content,
+                    "needs_embedding": needs_embedding,
+                })
+
+    return {"slots": slots}

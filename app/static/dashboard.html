@@ -30,29 +30,34 @@
     .header {
       background: var(--gradient);
       color: #fff;
-      padding: 18px 32px;
+      padding: 16px 32px;
       display: flex;
       align-items: center;
-      gap: 12px;
+      justify-content: space-between;
     }
-    .header-title {
-      font-size: 1.1rem;
-      font-weight: 700;
-      letter-spacing: -.01em;
+    .header-title { font-size: 1.05rem; font-weight: 700; letter-spacing: -.01em; }
+    .header-subtitle { font-size: .75rem; opacity: .75; margin-top: 2px; }
+    .btn-keys {
+      padding: 7px 16px;
+      font-size: .8rem;
+      font-weight: 600;
+      background: rgba(255,255,255,.15);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,.3);
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background .15s;
     }
-    .header-subtitle {
-      font-size: .78rem;
-      opacity: .75;
-      margin-top: 2px;
-    }
+    .btn-keys:hover { background: rgba(255,255,255,.25); }
 
     /* ── Layout ── */
     .container {
-      max-width: 960px;
+      max-width: 980px;
       margin: 32px auto;
       padding: 0 24px;
       display: grid;
-      grid-template-columns: 340px 1fr;
+      grid-template-columns: 320px 1fr;
       gap: 20px;
       align-items: start;
     }
@@ -65,9 +70,9 @@
       overflow: hidden;
     }
     .card-header {
-      padding: 14px 18px;
+      padding: 13px 18px;
       border-bottom: 1px solid var(--border);
-      font-size: .72rem;
+      font-size: .7rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: .08em;
@@ -79,7 +84,7 @@
     .upload-area {
       border: 2px dashed var(--border);
       border-radius: 8px;
-      padding: 32px 20px;
+      padding: 28px 20px;
       text-align: center;
       cursor: pointer;
       transition: border-color .15s, background .15s;
@@ -88,56 +93,30 @@
       border-color: var(--red);
       background: #fff5f6;
     }
-    .upload-icon { font-size: 2rem; margin-bottom: 10px; }
-    .upload-label {
-      font-size: .88rem;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 4px;
-    }
-    .upload-hint {
-      font-size: .75rem;
-      color: var(--muted);
-    }
-    #file-input { display: none; }
+    .upload-icon { font-size: 1.8rem; margin-bottom: 8px; }
+    .upload-label { font-size: .85rem; font-weight: 600; margin-bottom: 3px; }
+    .upload-hint  { font-size: .73rem; color: var(--muted); }
+    #file-input   { display: none; }
 
-    /* ── Buttons ── */
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 8px 16px;
-      font-size: .82rem;
-      font-weight: 600;
-      border-radius: 6px;
-      border: 1px solid transparent;
-      cursor: pointer;
-      transition: opacity .15s;
-      font-family: inherit;
-    }
-    .btn:disabled { opacity: .45; cursor: not-allowed; }
-    .btn-primary {
-      background: var(--gradient);
-      color: #fff;
-      border: none;
-    }
+    .btn-row { display: flex; gap: 8px; margin-top: 14px; }
+
     .btn-danger {
+      padding: 7px 14px;
+      font-size: .8rem;
+      font-weight: 600;
       background: transparent;
       color: var(--red);
       border: 1px solid #f9a8b4;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: inherit;
     }
     .btn-danger:hover:not(:disabled) { background: #fff0f2; }
+    .btn-danger:disabled { opacity: .4; cursor: not-allowed; }
 
-    .btn-row {
-      display: flex;
-      gap: 8px;
-      margin-top: 14px;
-    }
-
-    /* ── Status message ── */
     .status {
       margin-top: 12px;
-      font-size: .8rem;
+      font-size: .78rem;
       padding: 8px 12px;
       border-radius: 6px;
       display: none;
@@ -145,184 +124,277 @@
     .status.ok    { background: #dcfce7; color: #15803d; display: block; }
     .status.error { background: #fee2e2; color: var(--red); display: block; }
 
-    /* ── Workflow info ── */
+    /* ── Right panel ── */
+    .right-panel { display: flex; flex-direction: column; gap: 16px; }
+
     .empty-state {
       text-align: center;
       padding: 48px 20px;
       color: var(--muted);
       font-size: .85rem;
     }
-    .empty-icon { font-size: 2.5rem; margin-bottom: 12px; }
+    .empty-icon { font-size: 2.2rem; margin-bottom: 10px; }
 
-    .wf-meta {
-      margin-bottom: 16px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid var(--border);
-    }
-    .wf-title {
-      font-size: 1rem;
-      font-weight: 700;
-      margin-bottom: 4px;
-    }
-    .wf-detail {
-      font-size: .78rem;
-      color: var(--muted);
-    }
+    .wf-meta { margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+    .wf-title { font-size: .95rem; font-weight: 700; margin-bottom: 3px; }
+    .wf-detail { font-size: .75rem; color: var(--muted); }
 
-    .nodes-label {
-      font-size: .7rem;
+    .section-label {
+      font-size: .68rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: .08em;
       color: var(--muted);
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
+    /* ── Node rows ── */
     .node-row {
       display: flex;
       align-items: center;
       gap: 10px;
-      padding: 9px 12px;
+      padding: 8px 10px;
       border: 1px solid var(--border);
-      border-radius: 8px;
-      margin-bottom: 6px;
-      font-size: .83rem;
+      border-radius: 7px;
+      margin-bottom: 5px;
+      font-size: .82rem;
     }
     .node-label { flex: 1; font-weight: 500; }
-    .node-id {
-      font-family: "SF Mono", ui-monospace, monospace;
-      font-size: .7rem;
-      color: var(--muted);
-    }
+    .node-id { font-family: "SF Mono", ui-monospace, monospace; font-size: .68rem; color: var(--muted); }
 
-    /* ── Keys section ── */
-    .key-row {
+    /* ── Badges ── */
+    .badge {
+      font-size: .62rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .badge-start    { background: #dbeafe; color: #1d4ed8; }
+    .badge-step     { background: #dcfce7; color: #15803d; }
+    .badge-file     { background: #fef9c3; color: #a16207; }
+    .badge-router   { background: #f3e8ff; color: #7c3aed; }
+    .badge-output   { background: #f4f4f5; color: #52525b; }
+    .badge-content  { background: #fef9c3; color: #a16207; }
+    .badge-embed    { background: #f3e8ff; color: #7c3aed; }
+
+    /* ── File slots ── */
+    .slot-row {
       display: flex;
       align-items: center;
       gap: 10px;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      margin-bottom: 6px;
+    }
+    .slot-info { flex: 1; min-width: 0; }
+    .slot-label { font-size: .82rem; font-weight: 600; margin-bottom: 3px; }
+    .slot-file {
+      font-size: .72rem;
+      color: var(--muted);
+      font-family: "SF Mono", ui-monospace, monospace;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .slot-file.uploaded { color: #15803d; }
+    .slot-actions { display: flex; gap: 6px; flex-shrink: 0; }
+
+    .btn-upload {
+      padding: 5px 11px;
+      font-size: .75rem;
+      font-weight: 600;
+      background: var(--gradient);
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn-remove-slot {
+      padding: 5px 9px;
+      font-size: .75rem;
+      font-weight: 600;
+      background: transparent;
+      color: var(--red);
+      border: 1px solid #f9a8b4;
+      border-radius: 5px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn-remove-slot:hover { background: #fff0f2; }
+    .btn-remove-file {
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: .75rem;
+      padding: 0 0 0 4px;
+      line-height: 1;
+      vertical-align: middle;
+    }
+    .btn-remove-file:hover { color: var(--red); }
+
+    /* ── Keys Modal ── */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.45);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal {
+      background: var(--surface);
+      border-radius: 12px;
+      width: 100%;
+      max-width: 520px;
+      margin: 0 16px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,.2);
+    }
+    .modal-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .modal-title { font-size: .95rem; font-weight: 700; }
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: var(--muted);
+      line-height: 1;
+      padding: 2px 6px;
+    }
+    .modal-close:hover { color: var(--text); }
+    .modal-body { padding: 16px 20px; }
+
+    .key-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
       padding: 10px 0;
       border-bottom: 1px solid var(--border);
     }
     .key-row:last-child { border-bottom: none; }
-    .key-provider {
-      width: 70px;
-      font-size: .82rem;
-      font-weight: 600;
-      text-transform: capitalize;
-    }
+    .key-provider { width: 68px; font-size: .82rem; font-weight: 600; text-transform: capitalize; }
     .key-status {
-      font-size: .75rem;
+      font-size: .72rem;
       font-weight: 600;
-      padding: 2px 8px;
+      padding: 2px 7px;
       border-radius: 4px;
-      width: 60px;
+      width: 58px;
       text-align: center;
+      flex-shrink: 0;
     }
     .key-status.set   { background: #dcfce7; color: #15803d; }
     .key-status.unset { background: #f4f4f5; color: var(--muted); }
     .key-input {
       flex: 1;
       padding: 6px 10px;
-      font-size: .8rem;
+      font-size: .78rem;
       border: 1px solid var(--border);
       border-radius: 6px;
       font-family: "SF Mono", ui-monospace, monospace;
       outline: none;
     }
     .key-input:focus { border-color: var(--red); }
-    .btn-save {
-      padding: 6px 12px;
-      font-size: .78rem;
+    .btn-save-key {
+      padding: 6px 11px;
+      font-size: .75rem;
       font-weight: 600;
       background: var(--gradient);
       color: #fff;
       border: none;
-      border-radius: 6px;
+      border-radius: 5px;
       cursor: pointer;
       font-family: inherit;
+      flex-shrink: 0;
     }
-    .btn-remove {
-      padding: 6px 10px;
-      font-size: .78rem;
+    .btn-remove-key {
+      padding: 6px 9px;
+      font-size: .75rem;
       font-weight: 600;
       background: transparent;
       color: var(--red);
       border: 1px solid #f9a8b4;
-      border-radius: 6px;
+      border-radius: 5px;
       cursor: pointer;
       font-family: inherit;
+      flex-shrink: 0;
     }
-    .btn-remove:hover { background: #fff0f2; }
-
-    /* ── Node type badges ── */
-    .badge {
-      font-size: .65rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: .05em;
-      padding: 2px 7px;
-      border-radius: 4px;
-    }
-    .badge-start  { background: #dbeafe; color: #1d4ed8; }
-    .badge-step   { background: #dcfce7; color: #15803d; }
-    .badge-file   { background: #fef9c3; color: #a16207; }
-    .badge-router { background: #f3e8ff; color: #7c3aed; }
-    .badge-output { background: #f4f4f5; color: #52525b; }
+    .btn-remove-key:hover { background: #fff0f2; }
   </style>
 </head>
 <body>
 
+  <!-- Header -->
   <div class="header">
     <div>
       <div class="header-title">Dare Workflow Runner</div>
-      <div class="header-subtitle">Upload and inspect your workflow</div>
+      <div class="header-subtitle">Upload and run your Dare workflows locally</div>
     </div>
+    <button class="btn-keys" onclick="openModal()">⚙ API Keys</button>
   </div>
 
-  <!-- Keys section -->
-  <div style="max-width:960px;margin:0 auto 0;padding:0 24px;">
-    <div class="card" style="margin-bottom:20px;">
-      <div class="card-header">API Keys</div>
-      <div class="card-body" id="keys-panel">
-        <!-- rendered by JS -->
-      </div>
-    </div>
-  </div>
-
+  <!-- Main layout -->
   <div class="container">
 
-    <!-- Left: Upload -->
+    <!-- Left: Workflow upload -->
     <div class="card">
       <div class="card-header">Workflow</div>
       <div class="card-body">
-
         <div class="upload-area" id="upload-area">
           <div class="upload-icon">📂</div>
           <div class="upload-label">Drop your workflow JSON here</div>
           <div class="upload-hint">or click to browse</div>
           <input type="file" id="file-input" accept=".json,.dare" />
         </div>
-
         <div class="btn-row">
-          <button class="btn btn-danger" id="clear-btn" disabled>Clear</button>
+          <button class="btn-danger" id="clear-btn" disabled>Clear workflow</button>
         </div>
-
         <div class="status" id="status"></div>
-
       </div>
     </div>
 
-    <!-- Right: Workflow info -->
-    <div class="card">
-      <div class="card-header">Workflow Info</div>
-      <div class="card-body" id="info-panel">
-        <div class="empty-state">
-          <div class="empty-icon">🔲</div>
-          No workflow loaded yet.<br>Upload a JSON file to get started.
+    <!-- Right: Workflow info + file slots -->
+    <div class="right-panel">
+
+      <div class="card">
+        <div class="card-header">Workflow Info</div>
+        <div class="card-body" id="info-panel">
+          <div class="empty-state">
+            <div class="empty-icon">🔲</div>
+            No workflow loaded yet.<br>Upload a JSON file to get started.
+          </div>
         </div>
       </div>
-    </div>
 
+      <div class="card" id="slots-card" style="display:none;">
+        <div class="card-header">File Slots</div>
+        <div class="card-body" id="slots-panel"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- API Keys Modal -->
+  <div class="modal-backdrop" id="modal-backdrop">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-title">API Keys</span>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+      <div class="modal-body" id="keys-panel"></div>
+    </div>
   </div>
 
   <script>
@@ -331,6 +403,8 @@
     const clearBtn   = document.getElementById('clear-btn');
     const statusEl   = document.getElementById('status');
     const infoPanel  = document.getElementById('info-panel');
+    const slotsCard  = document.getElementById('slots-card');
+    const slotsPanel = document.getElementById('slots-panel');
 
     // ── Helpers ──
 
@@ -342,6 +416,8 @@
     function badgeFor(type) {
       return `<span class="badge badge-${type}">${type}</span>`;
     }
+
+    // ── Workflow info ──
 
     function renderInfo(data) {
       const title = data.title || '(untitled)';
@@ -358,7 +434,7 @@
           <div class="wf-title">${title}</div>
           <div class="wf-detail">${data.node_count} nodes · ${data.mode || 'sequential'} mode</div>
         </div>
-        <div class="nodes-label">Nodes</div>
+        <div class="section-label">Nodes</div>
         ${nodes}
       `;
       clearBtn.disabled = false;
@@ -372,19 +448,22 @@
         </div>
       `;
       clearBtn.disabled = true;
+      slotsCard.style.display = 'none';
     }
 
-    // ── Upload ──
+    async function loadInfo() {
+      const res = await fetch('/workflow/info');
+      if (!res.ok) { clearInfo(); return; }
+      renderInfo(await res.json());
+    }
+
+    // ── Workflow upload ──
 
     async function uploadFile(file) {
       const text = await file.text();
       let json;
-      try {
-        json = JSON.parse(text);
-      } catch {
-        showStatus('Invalid JSON file.', 'error');
-        return;
-      }
+      try { json = JSON.parse(text); }
+      catch { showStatus('Invalid JSON file.', 'error'); return; }
 
       const res = await fetch('/workflow/upload', {
         method: 'POST',
@@ -400,18 +479,8 @@
 
       showStatus('Workflow uploaded successfully.', 'ok');
       loadInfo();
+      loadSlots();
     }
-
-    // ── Load info on page load ──
-
-    async function loadInfo() {
-      const res = await fetch('/workflow/info');
-      if (!res.ok) { clearInfo(); return; }
-      const data = await res.json();
-      renderInfo(data);
-    }
-
-    // ── Clear ──
 
     clearBtn.addEventListener('click', async () => {
       await fetch('/workflow/clear', { method: 'DELETE' });
@@ -419,57 +488,120 @@
       showStatus('Workflow cleared.', 'ok');
     });
 
-    // ── Drag and drop ──
-
     uploadArea.addEventListener('click', () => fileInput.click());
-
-    uploadArea.addEventListener('dragover', e => {
-      e.preventDefault();
-      uploadArea.classList.add('dragover');
-    });
-
-    uploadArea.addEventListener('dragleave', () => {
-      uploadArea.classList.remove('dragover');
-    });
-
+    uploadArea.addEventListener('dragover', e => { e.preventDefault(); uploadArea.classList.add('dragover'); });
+    uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('dragover'));
     uploadArea.addEventListener('drop', e => {
       e.preventDefault();
       uploadArea.classList.remove('dragover');
       const file = e.dataTransfer.files[0];
       if (file) uploadFile(file);
     });
-
     fileInput.addEventListener('change', () => {
       if (fileInput.files[0]) uploadFile(fileInput.files[0]);
     });
 
-    // ── Keys ──
+    // ── File slots ──
+
+    async function loadSlots() {
+      const [slotsRes, filesRes] = await Promise.all([
+        fetch('/workflow/slots'),
+        fetch('/files'),
+      ]);
+
+      if (!slotsRes.ok) { slotsCard.style.display = 'none'; return; }
+
+      const { slots } = await slotsRes.json();
+      const uploaded  = filesRes.ok ? await filesRes.json() : {};
+
+      if (slots.length === 0) { slotsCard.style.display = 'none'; return; }
+
+      slotsCard.style.display = 'block';
+      slotsPanel.innerHTML = slots.map(slot => {
+        const filename = uploaded[slot.slot_id] || null;
+        const filenames = uploaded[slot.slot_id] || [];
+        const fileList = filenames.length
+          ? filenames.map(f => `
+              <div class="slot-file uploaded">
+                📄 ${f}
+                <button class="btn-remove-file" onclick="removeSlotFile('${slot.slot_id}', '${f}')" title="Remove">✕</button>
+              </div>
+            `).join('')
+          : `<div class="slot-file">No files uploaded</div>`;
+
+        return `
+          <div class="slot-row">
+            <div class="slot-info">
+              <div class="slot-label">${slot.label}</div>
+              ${fileList}
+              <div style="display:flex;gap:4px;margin-top:4px;">
+                ${slot.needs_content   ? '<span class="badge badge-content">content</span>'   : ''}
+                ${slot.needs_embedding ? '<span class="badge badge-embed">embedding</span>'   : ''}
+              </div>
+            </div>
+            <div class="slot-actions">
+              <label class="btn-upload" style="cursor:pointer;">
+                Upload
+                <input type="file" style="display:none" onchange="uploadSlotFile('${slot.slot_id}', this)" />
+              </label>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function uploadSlotFile(slotId, input) {
+      const file = input.files[0];
+      if (!file) return;
+      const formData = new FormData();
+      formData.append('file', file);
+      const res = await fetch(`/files/${slotId}`, { method: 'POST', body: formData });
+      if (res.ok) loadSlots();
+    }
+
+    async function removeSlotFile(slotId, filename) {
+      await fetch(`/files/${slotId}/${encodeURIComponent(filename)}`, { method: 'DELETE' });
+      loadSlots();
+    }
+
+    // ── API Keys Modal ──
 
     const PROVIDERS = [
-      { id: 'openai',  label: 'OpenAI',  placeholder: 'sk-...' },
-      { id: 'claude',  label: 'Claude',  placeholder: 'sk-ant-...' },
-      { id: 'gemini',  label: 'Gemini',  placeholder: 'AI...' },
-      { id: 'ollama',  label: 'Ollama',  placeholder: 'http://localhost:11434' },
+      { id: 'openai', label: 'OpenAI',  placeholder: 'sk-...' },
+      { id: 'claude', label: 'Claude',  placeholder: 'sk-ant-...' },
+      { id: 'gemini', label: 'Gemini',  placeholder: 'AI...' },
+      { id: 'ollama', label: 'Ollama',  placeholder: 'http://localhost:11434' },
     ];
+
+    function openModal() {
+      document.getElementById('modal-backdrop').classList.add('open');
+      loadKeys();
+    }
+
+    function closeModal() {
+      document.getElementById('modal-backdrop').classList.remove('open');
+    }
+
+    document.getElementById('modal-backdrop').addEventListener('click', e => {
+      if (e.target === e.currentTarget) closeModal();
+    });
 
     async function loadKeys() {
       const res = await fetch('/keys/status');
       if (!res.ok) return;
-      const statuses = await res.json();
-      renderKeys(statuses);
+      renderKeys(await res.json());
     }
 
     function renderKeys(statuses) {
-      const keysPanel = document.getElementById('keys-panel');
-      keysPanel.innerHTML = PROVIDERS.map(p => `
+      document.getElementById('keys-panel').innerHTML = PROVIDERS.map(p => `
         <div class="key-row">
           <span class="key-provider">${p.label}</span>
           <span class="key-status ${statuses[p.id] ? 'set' : 'unset'}">
             ${statuses[p.id] ? '✓ set' : 'not set'}
           </span>
           <input class="key-input" id="key-${p.id}" type="password" placeholder="${p.placeholder}" />
-          <button class="btn-save" onclick="saveKey('${p.id}')">Save</button>
-          ${statuses[p.id] ? `<button class="btn-remove" onclick="removeKey('${p.id}')">Remove</button>` : ''}
+          <button class="btn-save-key" onclick="saveKey('${p.id}')">Save</button>
+          ${statuses[p.id] ? `<button class="btn-remove-key" onclick="removeKey('${p.id}')">Remove</button>` : ''}
         </div>
       `).join('');
     }
@@ -478,17 +610,12 @@
       const input = document.getElementById(`key-${provider}`);
       const value = input.value.trim();
       if (!value) return;
-
       const res = await fetch('/keys', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ provider, value }),
       });
-
-      if (res.ok) {
-        input.value = '';
-        loadKeys();
-      }
+      if (res.ok) { input.value = ''; loadKeys(); }
     }
 
     async function removeKey(provider) {
@@ -498,7 +625,7 @@
 
     // ── Init ──
     loadInfo();
-    loadKeys();
+    loadSlots();
   </script>
 
 </body>
