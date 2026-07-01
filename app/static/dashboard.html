@@ -225,6 +225,28 @@
       font-family: inherit;
     }
     .btn-remove-slot:hover { background: #fff0f2; }
+    .idx-badge {
+      font-size: .68rem;
+      font-weight: 600;
+      padding: 1px 6px;
+      border-radius: 4px;
+      margin-left: 4px;
+      vertical-align: middle;
+    }
+    .idx-done     { background: #dcfce7; color: #15803d; }
+    .idx-progress { background: #fef9c3; color: #a16207; }
+    .idx-fail     { background: #fee2e2; color: var(--red); cursor: help; }
+
+    .key-warning {
+      font-size: .8rem;
+      background: #fef9c3;
+      color: #a16207;
+      border: 1px solid #fde68a;
+      border-radius: 6px;
+      padding: 8px 12px;
+      margin-bottom: 12px;
+    }
+
     .btn-remove-file {
       background: none;
       border: none;
@@ -236,6 +258,129 @@
       vertical-align: middle;
     }
     .btn-remove-file:hover { color: var(--red); }
+
+    .slot-prompt {
+      font-size: .72rem;
+      color: var(--muted);
+      margin: 5px 0 6px;
+      line-height: 1.45;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      font-style: italic;
+    }
+
+    /* ── Run button ── */
+    .btn-run {
+      width: 100%;
+      padding: 10px 18px;
+      font-size: .9rem;
+      font-weight: 700;
+      background: var(--gradient);
+      color: #fff;
+      border: none;
+      border-radius: 7px;
+      cursor: pointer;
+      font-family: inherit;
+      margin-top: 14px;
+      transition: opacity .15s;
+    }
+    .btn-run:disabled { opacity: .5; cursor: not-allowed; }
+
+    /* ── Run output panel ── */
+    .run-status {
+      font-size: .78rem;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 6px;
+      margin-bottom: 14px;
+    }
+    .run-status.running  { background: #fef9c3; color: #a16207; }
+    .run-status.done     { background: #dcfce7; color: #15803d; }
+    .run-status.failed   { background: #fee2e2; color: var(--red); }
+
+    .node-output {
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+    .node-output-header {
+      padding: 7px 12px;
+      background: #f9fafb;
+      border-bottom: 1px solid var(--border);
+      font-size: .75rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+    .node-output-instruction {
+      padding: 4px 12px 5px;
+      font-size: .75rem;
+      color: var(--muted);
+      font-style: italic;
+      background: #fafafa;
+      border-bottom: 1px solid var(--border);
+    }
+    .node-output-body {
+      padding: 12px;
+      font-size: .82rem;
+      line-height: 1.6;
+      word-break: break-word;
+      max-height: 260px;
+      overflow-y: auto;
+    }
+
+    .final-output-box {
+      border: 2px solid #bbf7d0;
+      border-radius: 8px;
+      background: #f0fdf4;
+      padding: 14px;
+      margin-top: 6px;
+      font-size: .85rem;
+      line-height: 1.65;
+      word-break: break-word;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    /* rendered markdown inside output boxes */
+    .node-output-body h2, .node-output-body h3, .node-output-body h4,
+    .final-output-box  h2, .final-output-box  h3, .final-output-box  h4 {
+      margin: .9em 0 .3em;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+    .node-output-body h2, .final-output-box h2 { font-size: 1.05em; }
+    .node-output-body h3, .final-output-box h3 { font-size: .97em; }
+    .node-output-body h4, .final-output-box h4 { font-size: .9em; color: var(--muted); }
+    .node-output-body p,  .final-output-box  p  { margin: .4em 0; }
+    .node-output-body ul, .node-output-body ol,
+    .final-output-box  ul, .final-output-box  ol {
+      margin: .4em 0 .4em 1.4em;
+      padding: 0;
+    }
+    .node-output-body li, .final-output-box li { margin: .2em 0; }
+    .node-output-body hr, .final-output-box hr  { border: none; border-top: 1px solid var(--border); margin: .8em 0; }
+    .node-output-body strong, .final-output-box strong { font-weight: 700; }
+    .node-output-body em,     .final-output-box em     { font-style: italic; }
+    .node-output-body code,   .final-output-box code   {
+      font-family: monospace;
+      background: rgba(0,0,0,.06);
+      padding: 1px 4px;
+      border-radius: 3px;
+      font-size: .9em;
+    }
+    .final-output-label {
+      font-size: .68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: #15803d;
+      margin-bottom: 8px;
+    }
 
     /* ── Keys Modal ── */
     .modal-backdrop {
@@ -383,6 +528,15 @@
         <div class="card-body" id="slots-panel"></div>
       </div>
 
+      <div id="run-btn-wrap" style="display:none;">
+        <button class="btn-run" id="run-btn" onclick="runWorkflow()">▶ Run Workflow</button>
+      </div>
+
+      <div class="card" id="run-card" style="display:none;">
+        <div class="card-header">Run Output</div>
+        <div class="card-body" id="run-panel"></div>
+      </div>
+
     </div>
   </div>
 
@@ -438,6 +592,7 @@
         ${nodes}
       `;
       clearBtn.disabled = false;
+      document.getElementById('run-btn-wrap').style.display = 'block';
     }
 
     function clearInfo() {
@@ -449,6 +604,8 @@
       `;
       clearBtn.disabled = true;
       slotsCard.style.display = 'none';
+      document.getElementById('run-btn-wrap').style.display = 'none';
+      document.getElementById('run-card').style.display = 'none';
     }
 
     async function loadInfo() {
@@ -503,6 +660,8 @@
 
     // ── File slots ──
 
+    let _pollTimer = null;
+
     async function loadSlots() {
       const [slotsRes, filesRes] = await Promise.all([
         fetch('/workflow/slots'),
@@ -511,28 +670,68 @@
 
       if (!slotsRes.ok) { slotsCard.style.display = 'none'; return; }
 
-      const { slots } = await slotsRes.json();
-      const uploaded  = filesRes.ok ? await filesRes.json() : {};
+      const { slots }  = await slotsRes.json();
+      const uploaded   = filesRes.ok ? await filesRes.json() : {};
+
+      // fetch per-file index status for each slot
+      // each result is { filename: { status, chunks, error? }, ... }
+      const statusResults = await Promise.all(
+        slots.map(s => fetch(`/files/status/${s.slot_id}`).then(r => r.ok ? r.json() : {}))
+      );
+      const indexStatuses = Object.fromEntries(
+        slots.map((s, i) => [s.slot_id, statusResults[i]])
+      );
+
+      // poll if any individual file is still indexing
+      const anyIndexing = Object.values(indexStatuses).some(fileMap =>
+        Object.values(fileMap).some(s => s.status === 'indexing')
+      );
+      clearTimeout(_pollTimer);
+      if (anyIndexing) _pollTimer = setTimeout(loadSlots, 2000);
 
       if (slots.length === 0) { slotsCard.style.display = 'none'; return; }
 
       slotsCard.style.display = 'block';
-      slotsPanel.innerHTML = slots.map(slot => {
-        const filename = uploaded[slot.slot_id] || null;
+
+      // warn if OpenAI key is missing (needed for embedding)
+      const keysRes = await fetch('/keys/status');
+      const keyStatuses = keysRes.ok ? await keysRes.json() : {};
+      const missingKeyWarning = !keyStatuses.openai ? `
+        <div class="key-warning">
+          ⚠ No OpenAI API key set. Files will upload but won't be indexed until you add a key via <strong>⚙ API Keys</strong>.
+        </div>
+      ` : '';
+      slotsPanel.innerHTML = missingKeyWarning;
+
+      slotsPanel.innerHTML += slots.map(slot => {
         const filenames = uploaded[slot.slot_id] || [];
+        const fileStatuses = indexStatuses[slot.slot_id] || {};
+
         const fileList = filenames.length
-          ? filenames.map(f => `
-              <div class="slot-file uploaded">
-                📄 ${f}
-                <button class="btn-remove-file" onclick="removeSlotFile('${slot.slot_id}', '${f}')" title="Remove">✕</button>
-              </div>
-            `).join('')
+          ? filenames.map(f => {
+              const fs = fileStatuses[f] || {};
+              const badge = fs.status === 'done'     ? '<span class="idx-badge idx-done">✓ indexed</span>'
+                          : fs.status === 'indexing' ? '<span class="idx-badge idx-progress">⏳ indexing…</span>'
+                          : fs.status === 'failed'   ? `<span class="idx-badge idx-fail" title="${fs.error || ''}">✗ failed</span>`
+                          : '';
+              return `
+                <div class="slot-file uploaded">
+                  📄 ${f} ${badge}
+                  <button class="btn-remove-file" onclick="removeSlotFile('${slot.slot_id}', '${f}')" title="Remove">✕</button>
+                </div>
+              `;
+            }).join('')
           : `<div class="slot-file">No files uploaded</div>`;
+
+        const promptHint = slot.prompt
+          ? `<div class="slot-prompt">"${slot.prompt}"</div>`
+          : '';
 
         return `
           <div class="slot-row">
             <div class="slot-info">
               <div class="slot-label">${slot.label}</div>
+              ${promptHint}
               ${fileList}
               <div style="display:flex;gap:4px;margin-top:4px;">
                 ${slot.needs_content   ? '<span class="badge badge-content">content</span>'   : ''}
@@ -542,7 +741,7 @@
             <div class="slot-actions">
               <label class="btn-upload" style="cursor:pointer;">
                 Upload
-                <input type="file" style="display:none" onchange="uploadSlotFile('${slot.slot_id}', this)" />
+                <input type="file" style="display:none" multiple onchange="uploadSlotFile('${slot.slot_id}', this)" />
               </label>
             </div>
           </div>
@@ -551,12 +750,17 @@
     }
 
     async function uploadSlotFile(slotId, input) {
-      const file = input.files[0];
-      if (!file) return;
-      const formData = new FormData();
-      formData.append('file', file);
-      const res = await fetch(`/files/${slotId}`, { method: 'POST', body: formData });
-      if (res.ok) loadSlots();
+      const files = Array.from(input.files);
+      if (!files.length) return;
+
+      // Upload each file sequentially and render after each one so the user
+      // sees badges appear one by one rather than waiting for all to finish.
+      for (const file of files) {
+        const formData = new FormData();
+        formData.append('file', file);
+        await fetch(`/files/${slotId}`, { method: 'POST', body: formData });
+        loadSlots();
+      }
     }
 
     async function removeSlotFile(slotId, filename) {
@@ -599,7 +803,7 @@
           <span class="key-status ${statuses[p.id] ? 'set' : 'unset'}">
             ${statuses[p.id] ? '✓ set' : 'not set'}
           </span>
-          <input class="key-input" id="key-${p.id}" type="password" placeholder="${p.placeholder}" />
+          <input class="key-input" id="key-${p.id}" type="password" placeholder="${statuses[p.id] ? '••••••••••••••••' : p.placeholder}" autocomplete="new-password" ${statuses[p.id] ? '' : 'readonly onfocus="this.removeAttribute(\'readonly\')"'} />
           <button class="btn-save-key" onclick="saveKey('${p.id}')">Save</button>
           ${statuses[p.id] ? `<button class="btn-remove-key" onclick="removeKey('${p.id}')">Remove</button>` : ''}
         </div>
@@ -621,6 +825,134 @@
     async function removeKey(provider) {
       await fetch(`/keys/${provider}`, { method: 'DELETE' });
       loadKeys();
+    }
+
+    // ── Workflow execution ──
+
+    let _runPollTimer = null;
+
+    async function runWorkflow() {
+      const btn = document.getElementById('run-btn');
+      if (btn) { btn.disabled = true; btn.textContent = '⏳ Running…'; }
+
+      const runCard  = document.getElementById('run-card');
+      const runPanel = document.getElementById('run-panel');
+      runCard.style.display = 'block';
+      runPanel.innerHTML = '<div class="run-status running">⏳ Starting workflow…</div>';
+
+      const res = await fetch('/run', { method: 'POST' });
+      if (!res.ok) {
+        const err = await res.json();
+        runPanel.innerHTML = `<div class="run-status failed">✗ ${err.detail || 'Failed to start run.'}</div>`;
+        if (btn) { btn.disabled = false; btn.textContent = '▶ Run Workflow'; }
+        return;
+      }
+
+      const { run_id } = await res.json();
+      clearTimeout(_runPollTimer);
+      _pollRun(run_id);
+    }
+
+    async function _pollRun(run_id) {
+      const res = await fetch(`/run/${run_id}`);
+      if (!res.ok) return;
+
+      const run = await res.json();
+      _renderRun(run);
+
+      if (run.status === 'running') {
+        _runPollTimer = setTimeout(() => _pollRun(run_id), 1500);
+      } else {
+        const btn = document.getElementById('run-btn');
+        if (btn) { btn.disabled = false; btn.textContent = '▶ Run Workflow'; }
+        // scroll to output
+        document.getElementById('run-card').scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    function _renderRun(run) {
+      const runPanel = document.getElementById('run-panel');
+      if (!runPanel) return;
+
+      const statusLabel = run.status === 'running' ? '⏳ Running…'
+                        : run.status === 'done'    ? '✓ Completed'
+                        : `✗ Failed: ${run.error || 'unknown error'}`;
+      const statusClass = run.status;
+
+      // One block per step/router node — sorted by label (natural order: Step 1, Step 2…)
+      const nodeBlocks = Object.values(run.node_outputs || {})
+        .sort((a, b) => _naturalCmp(a.label, b.label))
+        .map(n => `
+          <div class="node-output">
+            <div class="node-output-header">${n.label}</div>
+            ${n.instruction ? `<div class="node-output-instruction">${_esc(n.instruction)}</div>` : ''}
+            <div class="node-output-body">${_mdToHtml(n.output) || '<em style="opacity:.5">No output</em>'}</div>
+          </div>
+        `).join('');
+
+      const finalBlock = run.final_output ? `
+        <div class="final-output-label">Final Output</div>
+        <div class="final-output-box">${_mdToHtml(run.final_output)}</div>
+      ` : (run.status === 'done' ? '<p style="opacity:.5;font-size:.85rem;margin-top:1rem">No output was produced. Check the server logs for details.</p>' : '');
+
+      runPanel.innerHTML = `
+        <div class="run-status ${statusClass}">${statusLabel}</div>
+        ${nodeBlocks}
+        ${finalBlock}
+      `;
+    }
+
+    // Natural sort comparator: "Step 2" < "Step 10"
+    function _naturalCmp(a, b) {
+      const parts = s => String(s).split(/(\d+)/).map((c, i) => i % 2 ? parseInt(c, 10) : c.toLowerCase());
+      const pa = parts(a), pb = parts(b);
+      for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
+        const diff = (pa[i] ?? '') < (pb[i] ?? '') ? -1 : (pa[i] ?? '') > (pb[i] ?? '') ? 1 : 0;
+        if (diff !== 0) return diff;
+      }
+      return 0;
+    }
+
+    function _esc(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    // Minimal markdown → HTML renderer (no CDN needed).
+    // Handles headings, bold, italic, inline code, hr, and bullet lists.
+    function _mdToHtml(raw) {
+      if (!raw) return '';
+      const lines = String(raw).split('\n');
+      let html = '';
+      let inUl = false;
+
+      const inline = s => _esc(s)
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.+?)\*/g,     '<em>$1</em>')
+        .replace(/`(.+?)`/g,       '<code>$1</code>');
+
+      const closeList = () => { if (inUl) { html += '</ul>'; inUl = false; } };
+
+      for (const raw_line of lines) {
+        const line = raw_line.trimEnd();
+
+        if (/^#{4}\s/.test(line))      { closeList(); html += `<h4>${inline(line.replace(/^#{4}\s+/, ''))}</h4>`; continue; }
+        if (/^#{3}\s/.test(line))      { closeList(); html += `<h3>${inline(line.replace(/^#{3}\s+/, ''))}</h3>`; continue; }
+        if (/^#{2}\s/.test(line))      { closeList(); html += `<h2>${inline(line.replace(/^#{2}\s+/, ''))}</h2>`; continue; }
+        if (/^#{1}\s/.test(line))      { closeList(); html += `<h2>${inline(line.replace(/^#{1}\s+/, ''))}</h2>`; continue; }
+        if (/^---+$/.test(line))       { closeList(); html += '<hr>'; continue; }
+        if (/^[-*]\s/.test(line))      { if (!inUl) { html += '<ul>'; inUl = true; } html += `<li>${inline(line.replace(/^[-*]\s+/, ''))}</li>`; continue; }
+        if (line.trim() === '')        { closeList(); html += '<br>'; continue; }
+
+        closeList();
+        html += `<p>${inline(line)}</p>`;
+      }
+
+      closeList();
+      return html;
     }
 
     // ── Init ──

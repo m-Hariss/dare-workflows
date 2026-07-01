@@ -1,3 +1,7 @@
 fastapi
 uvicorn
 pydantic
+chromadb
+requests
+python-multipart
+pypdf
