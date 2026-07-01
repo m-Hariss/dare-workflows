@@ -1,8 +1,15 @@
+from pathlib import Path
+
 from fastapi import APIRouter, HTTPException
 
 from app.core.loader import load_workflow
 from app.core.graph import Graph
 from app.storage import workflow_store
+from app.storage import file_store
+from app.storage.vector_store import VectorStore
+
+_DATA_DIR    = Path(__file__).resolve().parents[2] / ".data"
+_STATUS_FILE = _DATA_DIR / "index_status.json"
 
 router = APIRouter(prefix="/workflow", tags=["workflow"])
 
@@ -45,8 +52,12 @@ def get_workflow_info() -> dict:
 
 @router.delete("/clear")
 def clear_workflow() -> dict:
-    """Delete the stored workflow from disk."""
+    """Delete the stored workflow and all associated files, embeddings and index status."""
     workflow_store.clear()
+    file_store.clear_all()
+    VectorStore.shared(_DATA_DIR).delete_all()
+    if _STATUS_FILE.exists():
+        _STATUS_FILE.write_text("{}")
     return {"message": "Workflow cleared"}
 
 
@@ -65,9 +76,16 @@ def get_slots() -> dict:
             needs_content   = node.data.get("needsContentFiles", False)
             needs_embedding = node.data.get("needsEmbeddingFiles", False)
             if needs_content or needs_embedding:
+                raw_prompt = node.data.get("prompt", "")
+                if isinstance(raw_prompt, dict):
+                    prompt_text = raw_prompt.get("content") or raw_prompt.get("text") or ""
+                else:
+                    prompt_text = raw_prompt or ""
+
                 slots.append({
-                    "slot_id": node.id,
-                    "label":   node.data.get("label", "Untitled Step"),
+                    "slot_id":         node.id,
+                    "label":           node.data.get("label", "Untitled Step"),
+                    "prompt":          prompt_text,
                     "needs_content":   needs_content,
                     "needs_embedding": needs_embedding,
                 })
